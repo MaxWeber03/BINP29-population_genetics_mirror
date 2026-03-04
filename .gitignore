@@ -1,0 +1,37 @@
+# File Types
+*.pdf
+*.fasta
+*.log
+*.genome
+*.gff
+*.png
+*.jpeg
+*.docx
+*.gff
+*.vcf
+*.fa
+*.aux
+*.bbl
+*.log
+*.out
+*.blg
+*.swp
+*.vchk
+*.gds
+*.Rhistory
+*.toc
+*.pptx
+*.gtf
+*.gff3
+*.gff2
+*.gff
+*.cfg
+*.fna
+*.dat
+
+# Folders
+
+
+# Specific Files
+myapalike.bst
+
