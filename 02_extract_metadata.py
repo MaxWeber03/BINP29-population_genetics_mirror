@@ -149,7 +149,7 @@ samples_download_failure = [sample for sample in samples_download if sample not 
 
 
 try: # Try to create the file (x), if it does already exist (FileExistsError), do it with write (w)
-    with open("samples_download_failure", "x") as line:
+    with open("04_metadata_table/samples_download_failure", "x") as line:
         for sample in samples_download_failure:
             line.write(f"{sample}\n")
 
