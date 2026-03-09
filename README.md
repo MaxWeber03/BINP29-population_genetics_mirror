@@ -15,6 +15,12 @@ The input data we recieved is not publicly available here.
 ## To Do & Known Issues (if there was more time)
 - TBD
 
+## File Structure
+The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
+
+- 01_report_presentation/ => contains report and presentation
+- ...
+
 ## Instructions Summary
 This project is a one week project and part of BINP29 Sequencing Informatics II during the second semester of M. Sc. Bioinformatics at Lund University.
 All students get different data, but some students have the same task.
@@ -37,7 +43,6 @@ Visualising the Skin Microbiome - Objective: Explore publicly available skin mic
 Reference:
 - MetaPhlAn - https://doi.org/10.1038/s41587-023-01688-w.
 - Krona plot - https://ondovb.github.io/portfolio/01-krona
-
 
 
 ### Meeting Monday 09/03 - Outline and Overview: Notes
