@@ -5,7 +5,7 @@
 mkdir 03_metadata
 
 # loop over the sampleID and curl meta data
-cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | head | \
+cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
     while read line; do
         curl -o 03_metadata/$line.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession=$line&fields=all&format=tsv"
     done

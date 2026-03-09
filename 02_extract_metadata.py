@@ -60,6 +60,7 @@ metadata.write_csv(
 # Filter samples based on the available metadata
 #################
 
+
 # Next, we can filter to exclude samples with missing information
 metadata_no_NA = metadata.filter(
     # make sure sample ID exists
