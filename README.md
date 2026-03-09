@@ -15,7 +15,7 @@ The input data we recieved is not publicly available here.
 
 
 ### To Do & Known Issues (if there was more time)
-- TBD
+- Add list of samples for which no metadata was downloaded
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -81,7 +81,7 @@ Steps:
 At the start, a list of samples is given (02_sample_list/NCBI.mine.metagenome.sampleID.txt).
 
 ### 01_retrieve_metadata.sh
-Bash script that loops over the sample IDs in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, downloads the metadata as .tsv and saves the metadata in 03_metadata/.
+Bash script that loops over the sample IDs in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, downloads the metadata as .tsv and saves the metadata in 03_metadata/. This process with just curl takes a long time, eventhough neither the CPU or the network are used at full capactiy, because each small file waits on responses from the server. To speed the process up, parallel downloading through xargs with curl is used instead. It does cut down the waiting time by minutes in testing.
 
 ### 02_extract_metadata.py
 Python script using polars that collects specific columns from all metadata.tsv files of the previous step (from 03_metadata/). The samples are filtered based on data completeness, if information on 16S/Shotgun or the location is missing, the sample will be removed from further analysis. The output of this step are 4 tables in 04_metadata_table:

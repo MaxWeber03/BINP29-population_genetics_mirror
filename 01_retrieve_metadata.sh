@@ -5,10 +5,26 @@
 mkdir 03_metadata
 
 # loop over the sampleID and curl meta data
+#cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
+#    while read line; do
+#        curl -o 03_metadata/$line.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession=$line&fields=all&format=tsv"
+#    done
+# execution time:  6:35 min, 712 successful downloads
+
+# make this faster with parallel downloading through xargs
+
 cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
-    while read line; do
-        curl -o 03_metadata/$line.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession=$line&fields=all&format=tsv"
-    done
+    xargs -P 500 -I {} \
+    curl -sS -o 03_metadata/{}.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession={}&fields=all&format=tsv"
+
+# execution time reduced to: 56 seconds, 711 successful downloads
+# => the error is always SSL_ERROR_ZERO_RETURN in connection to www.ebi.ac.uk:443
+# connection to the server seems unstable, the number of successfully downloaded files varies around 709-714. At the end, the process is waiting for a response until timing out. This especially slow, if not done in parallel.
+
+# xargs:
+# -P number of parallel executions
+# {} is like the variable in the previous version. xarg reads each line of stdin as one version of {}
+# -sS makes curl silent except errors
 
 # Extract sample ID, location, sequencing type (16S vs. Shotgut)
 # My goal here is to extract the information and feed it into one table for plotting/analysis in Python/R => one sample per row, one variable per column, tidy format
