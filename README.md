@@ -42,6 +42,10 @@ Reference:
 
 ### Meeting Monday 09/03 - Outline and Overview: Notes
 - all students of our group get different metagenomics data, but develope the same pipeline/app
+- I will work on mining data & 16S => kraken works with 16S => silva db
+- In this meeting we were explictily told that making the map interactive is optional if we have time at the end, and not a rigid requirement.
+
+Steps:
 1. fetch meta data from ncbi (curl + link)
     - curl "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession=SAMEA121737266&fields=all&format=tsv"
     - Sample ID can be replaced in the link
@@ -58,5 +62,5 @@ Reference:
 7. make interactive plots with kraken
 8. integrate the plots into an interactive version of step 4
 
-I will work on mining data & 16S => kraken works with 16S => silva db
-In this meeting we were explictily told that making the map interactive is optional if we have time at the end, and not a rigid requirement.
+
+
