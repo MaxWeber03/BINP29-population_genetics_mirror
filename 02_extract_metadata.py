@@ -8,6 +8,8 @@
     # - files with all necessary information
     # - files with all necessary information that are only 16S
 
+# Create list of unsuccesful downloads
+
  # Since this script is expected to work as part of this project's pipline, there will be no options, input folder, and output file will be hardcoded.abs
 
 #################
@@ -128,5 +130,39 @@ metadata_16S.write_csv(
     include_header = True,
     separator = "\t"
 )
+
+#################
+# create list of unsuccesful downloads
+#################
+
+# turn sample ID column into set for fast lookup
+sample_id_metadata = set(metadata["sample_accession"])
+
+# read the samples that should be downloaded
+with open ("02_sample_list/NCBI.mine.metagenome.sampleID.txt") as sample:
+    samples_download = [line.strip() for line in sample]
+
+# compare, save the ones that are missing in the metadata
+samples_download_failure = [sample for sample in samples_download if sample not in sample_id_metadata]
+    # loops over all samples in samples_download and if it is not in sample_id_metadata it saved it
+# save to file
+
+
+try: # Try to create the file (x), if it does already exist (FileExistsError), do it with write (w)
+    with open("samples_download_failure", "x") as line:
+        for sample in samples_download_failure:
+            line.write(f"{sample}\n")
+
+except FileExistsError:
+    with open("04_metadata_table/samples_download_failure", "w") as line:
+        for sample in samples_download_failure:
+            line.write(f"{sample}\n")
+
+    # same again but with "w" instead of "x" in case the file already exists
+
+
+
+
+
 
 
