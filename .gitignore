@@ -28,10 +28,12 @@
 *.cfg
 *.fna
 *.dat
+*.tsv
 *kate-swp*
 
 # Folders
 00_instructions/
+02_sample_list/
 
 # Specific Files
 myapalike.bst

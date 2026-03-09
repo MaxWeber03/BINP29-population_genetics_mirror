@@ -8,6 +8,7 @@ The input data we recieved is not publicly available here.
 
 ## Used Software & Versions
 - Streamlit 1.55.0 (python package)
+- Polars 1.38.1 (python package)
 - Python 3.13.11 was used for development and testing
 - Conda 25.11.1
 
@@ -19,6 +20,7 @@ The input data we recieved is not publicly available here.
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
 
 - 01_report_presentation/ => contains report and presentation
+- 02_sample_list/ => holds a .txt file with all the sample IDs
 - ...
 
 ## Instructions Summary
