@@ -1,33 +1,40 @@
 # Population Genetics Project: Visualizing species distribution from 16S metagenomics
 
+## Overview
 Respository:
 - Codeberg: https://codeberg.org/MaxWeber/BINP29-population_genetics
 - GitHub Mirror: https://github.com/MaxWeber03/BINP29-population_genetics_mirror
 
 The input data we recieved is not publicly available here.
 
-## Used Software & Versions
-- Streamlit 1.55.0 (python package)
-- Polars 1.38.1 (python package)
+### Used Software & Versions
 - Python 3.13.11 was used for development and testing
+    - Streamlit 1.55.0 (python package)
+    - Polars 1.38.1 (python package)
 - Conda 25.11.1
 
 
-## To Do & Known Issues (if there was more time)
-- TBD
+### To Do & Known Issues (if there was more time)
+- 01_retrieve_metadata.sh only downloads a subset of metadata to keep dev fast
 
-## File Structure
+### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
 
-- 01_report_presentation/ => contains report and presentation
+Folders:
+- 01_report_presentation/ => holds report and presentation
 - 02_sample_list/ => holds a .txt file with all the sample IDs
-- ...
+- 03_metadata => holds the metadata files of all samples
+- 04_metadata_table => holds tables of metadata for all samples
+
+Scripts (detail see workflow section below):
+- 01_retrieve_metadata.sh => script to download all metadata files
+- 02_extract_metadata.py => script to extract information from the metadata and to create tables with samples and their relevant metadata
 
 ## Instructions Summary
 This project is a one week project and part of BINP29 Sequencing Informatics II during the second semester of M. Sc. Bioinformatics at Lund University.
 All students get different data, but some students have the same task.
 My task is to visualize the species distribution from metagenomics samples of microbioms from mines (e.g. gold or silver mines).
-The starting point for the project is a list of samples on NCBI.
+The starting point for the project is a list of samples on a database.
 The final result is supposed to be an "app", for which we can use streamlit (pyhon package, that builds app around our scripts). The implementation of this will likely not be polished as we have not developed anything into an app before and only have a short time. For submission, a 2-4 page report (paper style) and a 3-4 minute presentation are required.
 
 ### Copy of step-by-step instructions
@@ -53,10 +60,10 @@ Reference:
 - In this meeting we were explictily told that making the map interactive is optional if we have time at the end, and not a rigid requirement.
 
 Steps:
-1. fetch meta data from ncbi (curl + link)
+1. fetch meta data from db (curl + link)
     - curl "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession=SAMEA121737266&fields=all&format=tsv"
     - Sample ID can be replaced in the link
-    - get column numbers in NCBI metadata: cat A.txt | head -n2 | sed 's/\t/\n/g' | nl -ba
+    - get column numbers in db metadata: cat A.txt | head -n2 | sed 's/\t/\n/g' | nl -ba
 2. visualise distrubution => histogram of samples countries or map
     - metadata contains link to fasta and coordinates
 3. distribution of 16S vs shotgun
@@ -69,5 +76,17 @@ Steps:
 7. make interactive plots with kraken
 8. integrate the plots into an interactive version of step 4
 
+## Workflow
 
+At the start, a list of samples is given (02_sample_list/NCBI.mine.metagenome.sampleID.txt).
 
+### 01_retrieve_metadata.sh
+Bash script that loops over the sample IDs in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, downloads the metadata as .tsv and saves the metadata in 03_metadata/.
+
+### 02_extract_metadata.py
+Python script using polars that collects specific columns from all metadata.tsv files of the previous step (from 03_metadata/). The samples are filtered based on data completeness, if information on 16S/Shotgun or the location is missing, the sample will be removed from further analysis. The output of this step are 4 tables in 04_metadata_table:
+
+- extracted_metadata_all_samples.tsv => contains the extracted metadata of all samples
+- extracted_metadata_no_NA.tsv => contains the samples that have the required metadata
+- extracted_metadata_incomplete.tsv => contains the samples that do not have the required metadata
+- extracted_metadata_16S.tsv => contains all complete samples that use 16S
