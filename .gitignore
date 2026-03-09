@@ -28,9 +28,10 @@
 *.cfg
 *.fna
 *.dat
+*kate-swp*
 
 # Folders
-
+00_instructions/
 
 # Specific Files
 myapalike.bst
