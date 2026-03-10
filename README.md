@@ -9,13 +9,15 @@ The input data we recieved is not publicly available here.
 
 ### Used Software & Versions
 - Python 3.13.11 was used for development and testing
-    - Streamlit 1.55.0 (python package)
-    - Polars 1.38.1 (python package)
+    - Polars 1.38.1 for data handling
+    - polars-reverse-geocode-0.7.8 to covert coordinates to countries within polars (https://github.com/MarcoGorelli/polars-reverse-geocode)
+    - pycountry 26.2.16 to relate country codes back to full country name
 - Conda 25.11.1
 
 
 ### To Do & Known Issues (if there was more time)
 - Instead of downloading all column of the metadata, download only the necessary field
+- To determine the country, only the country works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -82,7 +84,7 @@ Steps:
 At the start, a list of samples is given (02_sample_list/NCBI.mine.metagenome.sampleID.txt).
 
 ### 01_retrieve_metadata.sh
-Bash script that loops over the sample IDs in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, downloads the metadata as .tsv and saves the metadata in 03_metadata/. This process with just curl takes a long time, eventhough neither the CPU or the network are used at full capactiy, because each small file waits on responses from the server. To speed the process up, parallel downloading through xargs with curl is used instead. It does cut down the waiting time by minutes in testing.
+Bash script that loops over the sample IDs in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, downloads the metadata as .tsv and saves the metadata in 03_metadata/. This process with just curl takes a long time, eventhough neither the CPU or the network are used at full capactiy, because each small file waits on responses from the server. To speed the process up, parallel downloading through xargs with curl is used instead. It does cut down the waiting time by minutes in testing. This script also sets up the empty folders for the python scripts (could be done in python too, but faster here).
 
 ### 02_extract_metadata.py
 Python script using polars that collects specific columns from all metadata.tsv files of the previous step (from 03_metadata/). The samples are filtered based on data completeness, if information on 16S/Shotgun or the location is missing, the sample will be removed from further analysis. The output of this step are 4 tables in 04_metadata_table:
@@ -91,3 +93,6 @@ Python script using polars that collects specific columns from all metadata.tsv 
 - extracted_metadata_no_NA.tsv => contains the samples that have the required metadata
 - extracted_metadata_incomplete.tsv => contains the samples that do not have the required metadata
 - extracted_metadata_16S.tsv => contains all complete samples that use 16S
+
+### 03_clean_metadata.py
+Python script to extract the necessary data (sample_accession	fastq_ftp country sequencing_type) from the original columns of the metadata (sample_accession	fastq_ftp	location	country	experiment_title	study_title).

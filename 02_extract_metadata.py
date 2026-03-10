@@ -10,7 +10,7 @@
 
 # Create list of unsuccesful downloads
 
- # Since this script is expected to work as part of this project's pipline, there will be no options, input folder, and output file will be hardcoded.abs
+ # Since this script is expected to work as part of this project's pipline, there will be no options, input folder, and output file will be hardcoded.
 
 #################
 # Import modules
@@ -71,8 +71,8 @@ metadata_no_NA = metadata.filter(
     # make sure fastq link exists
     (pl.col("fastq_ftp").is_not_null()) &
 
-    # filter so that country or location is not None (one of them exists)
-    ((pl.col("location").is_not_null()) | (pl.col("country").is_not_null())) &
+    # filter so that country is not None 
+    (pl.col("country").is_not_null()) &
 
     # and filter that shotgun or 16S is written somewhere in experiment_title or study_title
     ((pl.col("experiment_title").str.contains("(?i)16S|(?i)shotgun")) | 
