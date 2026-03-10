@@ -71,7 +71,9 @@ map = px.scatter_map(
     data_frame = metadata,
     lat = "Latitude",
     lon = "Longitude",
-    color = "Sequencing Type"
+    color = "Sequencing Type",
+    center={'lat': 0, 'lon': 0},
+    zoom=1
 )
 
 map.write_html("06_plots/map.html")
