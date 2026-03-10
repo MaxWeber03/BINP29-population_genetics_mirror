@@ -42,12 +42,13 @@ metadata = pl.read_csv(
 metadata = metadata.with_columns(
     # use regex to match anything before a : in the country column, put the information into the new columns
     (pl.col("country").str.extract(r"^(.*):")).alias("country_extracted")
-).drop("location", "country") # drop no longer needed columns
+)
 
 # Convert coordinates to country to double check the country and make the code more robust, in case coordiantes are there but no country
-# does not work because external api or database is required to look up the countries, which is out of the scope of this project
-'''
-    
+# does not work because external api or database is required to look up the countries, which is out of the scope of this project.
+# However, we keep the conversion of the coordinates, since it might be useful downstream.
+
+metadata = metadata.with_columns(  
     # convert coordinates from N/W to Decimal degrees
     # currently the coordnates are given as lat in degrees with decimal, and N/S notation and long with decimal and E/W
     # this needs be converted to two different column in  degrees with decimal and - for s and w
@@ -93,10 +94,14 @@ metadata = metadata.with_columns(
         ).otherwise(pl.col("long_num")).alias("long_clean")
 ).drop("lat_num", "long_num", "lat_raw", "long_raw") # drop no longer needed columns
 
+# the part of finding the countries that does not work:
+'''
+
 # to look up the coordinates we need to load a world map from geopandas
 world = gpd.read_file(gpd.datasets.get_path("naturalearth_lowres"))[
     ["iso_a3", "geometry"]
 ]
+
 
 # convert out data frame to geopandas
 metadata_geopanda = metadata.to_pandas()
@@ -127,6 +132,9 @@ metadata = metadata.with_columns(
         ).then(pl.lit("Shotgun")).alias("sequencing_type")
 
 ).drop("experiment_title", "study_title") # drop no longer needed columns
+
+# rename columns
+metadata = metadata.rename({"country_extracted": "Country","sequencing_type":"Sequencing Type", "lat_clean":"Latitude", "long_clean":"Longitude"})
 
 # write to a file
 metadata.write_csv(

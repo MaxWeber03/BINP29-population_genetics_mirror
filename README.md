@@ -10,14 +10,15 @@ The input data we recieved is not publicly available here.
 ### Used Software & Versions
 - Python 3.13.11 was used for development and testing
     - Polars 1.38.1 for data handling
-    - Pandas 2.3.3
-    - Plotly 6.6.0
+    - Pandas 2.3.3 required for plotting
+    - Plotly 6.6.0 for plotting
 - Conda 25.11.1
 
 
 ### To Do & Known Issues (if there was more time)
 - Instead of downloading all column of the metadata, download only the necessary field
 - To determine the country, only the country works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
+- Make Snakemake Workflow
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -99,3 +100,7 @@ Python script to extract the necessary data (sample_accession,	fastq_ftp, countr
 
 ### 04_plot_distribution.py
 Uses pandas and plotly to create plots of the sample distribution for country and sequencing type. The outputs plots into 06_plots, and takes 05_metadata_cleaned/metadata_cleaned.tsv as an input.
+Generates three files in total:
+- 06_plots/histogram_countries_type.html => Interactive histogram of the type of sequencing per country
+- 06_plots/histogram_countries.html => Interactive histogram of the number of samples per country (Sequencing type is ignored)
+- 06_plots/map.html => Interactive map showning the sampling sites as dots, differentiates between 16S and Shotgun. 
