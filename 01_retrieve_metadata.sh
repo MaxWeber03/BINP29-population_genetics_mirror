@@ -15,7 +15,7 @@ mkdir 03_metadata
 
 cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
     xargs -P 500 -I {} \
-    curl -sS -o 03_metadata/{}.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession={}&fields=all&format=tsv"
+    curl --connect-timeout 15 -sS -o 03_metadata/{}.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession={}&fields=all&format=tsv"
 
 # execution time reduced to: 56 seconds, 711 successful downloads
 # => the error is always SSL_ERROR_ZERO_RETURN in connection to www.ebi.ac.uk:443
@@ -25,6 +25,13 @@ cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
 # -P number of parallel executions
 # {} is like the variable in the previous version. xarg reads each line of stdin as one version of {}
 # -sS makes curl silent except errors
+# --connect-timeout 15 gives curl a maximum of 15 seconds without server response before timing out
+
+# In testing, running curl on everything twice lead to a higher number of files successfully downloaded. The number did not furter increase with three runs.
+# So I will run it a second time
+cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
+    xargs -P 500 -I {} \
+    curl --connect-timeout 15 -sS -o 03_metadata/{}.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession={}&fields=all&format=tsv"
 
 # Extract sample ID, location, sequencing type (16S vs. Shotgut)
 # My goal here is to extract the information and feed it into one table for plotting/analysis in Python/R => one sample per row, one variable per column, tidy format
