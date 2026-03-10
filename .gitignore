@@ -31,6 +31,8 @@
 *.tsv
 *kate-swp*
 *.html
+*.gz
+*.fastq
 
 # Folders
 00_instructions/
