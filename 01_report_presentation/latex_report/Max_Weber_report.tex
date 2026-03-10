@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\setlength {\marginparwidth }{2cm} % remove warning about todonotes
+\usepackage{todonotes} %Enables ToDo notes (\todo)
+%\usepackage{minted}
+\usepackage{placeins}
+\usepackage[authoryear]{natbib}
+\usepackage{caption} % to adjust caption width
+\usepackage{amsmath}
+\usepackage{nameref}
+
+
+\bibliographystyle{myapalike}
+
+
+\usepackage[hidelinks]{hyperref} % links in the text, should be loaded last
+
+
+% Tile Page Setup
+\title{BINP29 Population Genetics Report - Making an interactive visualisation of microbioms from mines}
+\author{Max Weber}
+\date{March 2026}
+
+\begin{document}
+
+% Title Page
+\maketitle
+\tableofcontents
+
+% Methods
+\newpage
+\setcounter{page}{1}
+
+% Intro
+\section{Introduction}
+Test
+% Methods
+\section{Methods}
+A repository with all scripts can be accessed on \href{https://codeberg.org/MaxWeber/BINP29-population_genetics}{Codeberg} or \href{https://github.com/MaxWeber03/BINP29-population_genetics_mirror}{GitHub}.
+
+
+Test cite \citep{MetaPhlAn}.
+
+%Discussion
+\section{Discussion}
+\label{discussion}
+
+
+% References
+\newpage
+\bibliography{references}
+
+% Supplemental Material
+\newpage
+\FloatBarrier
+\section{Supplemental Material}
+
+
+\end{document}
+
