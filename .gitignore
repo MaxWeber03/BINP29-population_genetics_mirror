@@ -30,6 +30,7 @@
 *.dat
 *.tsv
 *kate-swp*
+*.html
 
 # Folders
 00_instructions/
