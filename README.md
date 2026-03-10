@@ -10,8 +10,8 @@ The input data we recieved is not publicly available here.
 ### Used Software & Versions
 - Python 3.13.11 was used for development and testing
     - Polars 1.38.1 for data handling
-    - polars-reverse-geocode-0.7.8 to covert coordinates to countries within polars (https://github.com/MarcoGorelli/polars-reverse-geocode)
-    - pycountry 26.2.16 to relate country codes back to full country name
+    - Pandas 2.3.3
+    - Plotly 6.6.0
 - Conda 25.11.1
 
 
