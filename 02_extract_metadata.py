@@ -59,6 +59,18 @@ metadata.write_csv(
 # If the columns mismatch, this script will fail with "schema lengths differ"!
 
 #################
+# Split fastq link into two columns
+##################
+
+# Some samples have two files to download (forward and reverse)
+metadata = metadata.with_columns(
+    # extract first link (before ;)
+    (pl.col("fastq_ftp").str.extract(r"^(.*?);")).alias("fastq_link_1"),
+    # extract second link (after ;)
+    (pl.col("fastq_ftp").str.extract(r";(.*)$")).alias("fastq_link_2")
+).drop("fastq_ftp")
+
+#################
 # Filter samples based on the available metadata
 #################
 
@@ -69,7 +81,7 @@ metadata_no_NA = metadata.filter(
     (pl.col("sample_accession").is_not_null()) &
 
     # make sure fastq link exists
-    (pl.col("fastq_ftp").is_not_null()) &
+    (pl.col("fastq_link_1").is_not_null()) &
 
     # filter so that country is not None 
     (pl.col("country").is_not_null()) &
@@ -95,7 +107,7 @@ metadata_incomplete = metadata.filter(
         (pl.col("sample_accession").is_not_null()) &
 
     # make sure fastq link exists
-    (pl.col("fastq_ftp").is_not_null()) &
+    (pl.col("fastq_link_1").is_not_null()) &
 
     # filter so that country or location is not None (one of them exists)
     ((pl.col("location").is_not_null()) | (pl.col("country").is_not_null())) &
