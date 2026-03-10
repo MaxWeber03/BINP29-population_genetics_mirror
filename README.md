@@ -95,4 +95,7 @@ Python script using polars that collects specific columns from all metadata.tsv 
 - extracted_metadata_16S.tsv => contains all complete samples that use 16S
 
 ### 03_clean_metadata.py
-Python script to extract the necessary data (sample_accession	fastq_ftp country sequencing_type) from the original columns of the metadata (sample_accession	fastq_ftp	location	country	experiment_title	study_title).
+Python script to extract the necessary data (sample_accession,	fastq_ftp, country, sequencing_type) from the original columns of the metadata (sample_accession,	fastq_ftp,	location,	country,	experiment_title,	study_title). Outputs the clean metadata table into 05_metadata_cleaned/metadata_cleaned.tsv.
+
+### 04_plot_distribution.py
+Uses pandas and plotly to create plots of the sample distribution for country and sequencing type. The outputs plots into 06_plots, and takes 05_metadata_cleaned/metadata_cleaned.tsv as an input.

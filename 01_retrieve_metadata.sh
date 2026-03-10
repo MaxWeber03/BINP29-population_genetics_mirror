@@ -45,6 +45,6 @@ cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
 # make directory for meta data table
 mkdir 04_metadata_table
 mkdir 05_metadata_cleaned
-mkdir 06_static_plots
+mkdir 06_plots
 
 
