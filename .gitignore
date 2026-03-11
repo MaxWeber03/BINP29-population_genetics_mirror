@@ -40,6 +40,7 @@
 04_metadata_table/
 08_kraken_db/
 09_kraken_output/
+10_bracken_output/
 
 # Specific Files
 myapalike.bst

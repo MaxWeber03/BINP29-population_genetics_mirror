@@ -36,6 +36,8 @@ while read line; do
         --output 09_kraken_output/$line \
         --paired \
         --use-names \
+        --report-zero-counts \
+        --report-minimizer-data \
         --report 09_kraken_output/${line}_report.kreport2 \
         "07_sample_seq/${line}_1.fastq" "07_sample_seq/${line}_2.fastq"
 
