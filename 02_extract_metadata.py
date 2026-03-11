@@ -63,11 +63,19 @@ metadata.write_csv(
 ##################
 
 # Some samples have two files to download (forward and reverse)
+# So first check if there are two links, separated by ";" and then feed them into the columns according to it
 metadata = metadata.with_columns(
-    # extract first link (before ;)
-    (pl.col("fastq_ftp").str.extract(r"^(.*?);")).alias("fastq_link_1"),
-    # extract second link (after ;)
-    (pl.col("fastq_ftp").str.extract(r";(.*)$")).alias("fastq_link_2")
+    # extract first link
+    pl.when(pl.col("fastq_ftp").str.contains(";"))
+      .then(pl.col("fastq_ftp").str.extract(r"^(.*?);"))
+      .otherwise(pl.col("fastq_ftp"))
+      .alias("fastq_link_1"),
+
+    # extract second link
+    pl.when(pl.col("fastq_ftp").str.contains(";"))
+      .then(pl.col("fastq_ftp").str.extract(r";(.*)$"))
+      .otherwise(None)
+      .alias("fastq_link_2")
 ).drop("fastq_ftp")
 
 #################
