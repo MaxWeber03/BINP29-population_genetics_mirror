@@ -38,6 +38,7 @@
 00_instructions/
 02_sample_list/
 04_metadata_table/
+08_kraken_db/
 
 # Specific Files
 myapalike.bst
