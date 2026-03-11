@@ -14,6 +14,7 @@ The input data we recieved is not publicly available here.
     - Plotly 6.6.0 for plotting
 - Conda 25.11.1
 - Kraken2 2.17.1
+- Bracken 3.0.1
 
 
 ### To Do & Known Issues (if there was more time)
