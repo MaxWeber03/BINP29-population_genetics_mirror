@@ -40,11 +40,11 @@ for file in 10_bracken_output/*.bracken_output; do
     # put the two column together into one new file
     paste "12_data_for_krona/${file_name}_col1" "12_data_for_krona/${file_name}_col2" > "12_data_for_krona/${file_name}.temp.tsv"
 
+    # remove all rows with no taxonomy (nothing found)
+    awk '{if($2 != "") print}' "12_data_for_krona/${file_name}.temp.tsv" > "12_data_for_krona/${file_name}.tsv"
+
     # remove the temp files
     rm "12_data_for_krona/${file_name}_col1"
     rm "12_data_for_krona/${file_name}_col2"
-
-    # remove all rows with no taxonomy (nothing found)
-    awk '{if($2 != "") print}' "12_data_for_krona/${file_name}.temp.tsv" > "12_data_for_krona/${file_name}.tsv"
     rm "12_data_for_krona/${file_name}.temp.tsv"
 done

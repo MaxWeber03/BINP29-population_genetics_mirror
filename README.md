@@ -15,6 +15,7 @@ The input data we recieved is not publicly available here.
 - Conda 25.11.1
 - Kraken2 2.17.1
 - Bracken 3.0.1
+- Taxonkit v0.20.0
 
 
 ### To Do & Known Issues (if there was more time)
@@ -119,4 +120,5 @@ Script that runs kraken2 to identify the taxonomic groups (to genus levels) in t
 ### 07_bracken.sh
 Script that runs bracken on the kraken2 outputs to add information about relative abundance to the taxonomic groups.
 
-# Use taxonomic id to get taxonomic tree from NCBI
+### 08_data_krona.sh
+Script that extracts the taxon name from the bracken output, finds the full taxonomy for that name, and writes the full taxonomy into a file together with the relative abundance in the sample. Uses taxonkit v0.20.0. Outputs are .tsv in 12_data_for_krona that are used to create krona plots.
