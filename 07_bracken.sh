@@ -17,8 +17,8 @@ while read line; do
     bracken \
         -d 08_kraken_db/SILVA_138_2_k2db \
         -i 09_kraken_output/${line}_report.kreport2 \
-        -o 10_bracken_output/${line}_bracken_output \
-        -w 10_bracken_output/${line}_bracken_report \
+        -o 10_bracken_output/${line}.bracken_output \
+        -w 10_bracken_output/${line}.bracken_report \
         -l G
 
 done < 02_sample_list/sample_selection_for_analysis.txt
