@@ -1,9 +1,9 @@
 # This script will run kraken2 on the raw sequences. This is not the correct way, as preprocessing (trimming, deduplication, chimera removal) would be necessary. However, that is out of scope for this project.
 
 # Install kraken2 with conda
-conda create -n kraken2 -c bioconda
+# conda create -n kraken2 -c bioconda
 conda activate kraken2
-conda install kraken2=2.17.1
+# conda install kraken2=2.17.1
 
 # Confirm version
 kraken2 --version
@@ -35,9 +35,10 @@ while read line; do
         --threads 8 \
         --output 09_kraken_output/$line \
         --paired \
-        --use-names\
+        --use-names \
+        --report 09_kraken_output/${line}_report.kreport2 \
         "07_sample_seq/${line}_1.fastq" "07_sample_seq/${line}_2.fastq"
-        
+
 done < 02_sample_list/sample_selection_for_analysis.txt
 
 # loops over all samples as $line, use 8 threads, input has paired ends, use scientific names
