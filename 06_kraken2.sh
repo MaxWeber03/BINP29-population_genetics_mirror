@@ -28,15 +28,17 @@ cd ..
 # run kraken2
 
 # loop over the samples
-cat 02_sample_list/sample_selection_for_analysis.txt | \
-    while read line; do
+while read line; do
     
     kraken2 \
-        --db silva
-        threads 8 \
-        --output 08_kraken_output/$line \
+        --db 08_kraken_db/SILVA_138_2_k2db \
+        --threads 8 \
+        --output 09_kraken_output/$line \
         --paired \
-        --use-names
+        --use-names\
+        "07_sample_seq/${line}_1.fastq" "07_sample_seq/${line}_2.fastq"
+        
+done < 02_sample_list/sample_selection_for_analysis.txt
 
 # loops over all samples as $line, use 8 threads, input has paired ends, use scientific names
-# We can run this locally in ram, since the database is small
+# We can run this locally in ram, since the database is small (tested on Surface Pro 8 with 8 GB RAM)
