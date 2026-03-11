@@ -33,6 +33,7 @@
 *.html
 *.gz
 *.fastq
+*.dmp
 
 # Folders
 00_instructions/
