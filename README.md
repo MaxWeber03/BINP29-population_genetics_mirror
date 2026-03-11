@@ -13,6 +13,7 @@ The input data we recieved is not publicly available here.
     - Pandas 2.3.3 required for plotting
     - Plotly 6.6.0 for plotting
 - Conda 25.11.1
+- Kraken2 2.17.1
 
 
 ### To Do & Known Issues (if there was more time)
