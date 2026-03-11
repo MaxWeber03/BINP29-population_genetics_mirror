@@ -19,6 +19,7 @@ The input data we recieved is not publicly available here.
 - Instead of downloading all column of the metadata, download only the necessary field
 - To determine the country, only the country works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
 - Make Snakemake Workflow
+- Add preprocessing of samples (trimming, deduplication, chimera removal) instead of running classification on raw reads.
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -42,7 +43,7 @@ The starting point for the project is a list of samples on a database.
 The final result is supposed to be an "app", for which we can use streamlit (pyhon package, that builds app around our scripts). The implementation of this will likely not be polished as we have not developed anything into an app before and only have a short time. For submission, a 2-4 page report (paper style) and a 3-4 minute presentation are required.
 
 ### Copy of step-by-step instructions
-Visualising the Skin Microbiome - Objective: Explore publicly available skin microbiome datasets and visualise their geographical distribution and microbial composition.
+"Visualising the Skin Microbiome - Objective: Explore publicly available skin microbiome datasets and visualise their geographical distribution and microbial composition.
 
 1. You will be provided with a list of NCBI skin microbiome metagenome Bio-project IDs.
 2. Extract metadata and visualise the geographical distribution of samples (number of samples from each country).
@@ -54,13 +55,12 @@ Visualising the Skin Microbiome - Objective: Explore publicly available skin mic
 8. Integrate this with the interactive map so that clicking on a sample location in Sweden opens the Krona plot showing its microbiome composition (this will be done for only the three samples).
 
 Reference:
-- MetaPhlAn - https://doi.org/10.1038/s41587-023-01688-w.
-- Krona plot - https://ondovb.github.io/portfolio/01-krona
+- Krona plot - https://ondovb.github.io/portfolio/01-krona"
 
 
 ### Meeting Monday 09/03 - Outline and Overview: Notes
 - all students of our group get different metagenomics data, but develope the same pipeline/app
-- I will work on mining data & 16S => kraken works with 16S => silva db
+- I will work on mining data & 16S => kraken works with 16S => silva db, do not use metaphlan
 - In this meeting we were explictily told that making the map interactive is optional if we have time at the end, and not a rigid requirement.
 
 Steps:
@@ -74,7 +74,7 @@ Steps:
     - grouped barplot with sequencing type and country
 4. interactive map => interactive is optional, could link to plot, plot only for the three selected samples
 5. take 3 samples from from 16S rRNA (the files are reads, so lot of stuff in each sample), retrieve fasta files
-6. use metaphlan 4 through conda, alternative would be kraken
+6. use kraken2 through conda (since I am working on 16S, would be Metaphlan for shotgun)
     - visualize species distribution based on the fasta files
     - x species, y abundance
 7. make interactive plots with kraken
@@ -104,3 +104,9 @@ Generates three files in total:
 - 06_plots/histogram_countries_type.html => Interactive histogram of the type of sequencing per country
 - 06_plots/histogram_countries.html => Interactive histogram of the number of samples per country (Sequencing type is ignored)
 - 06_plots/map.html => Interactive map showning the sampling sites as dots, differentiates between 16S and Shotgun. 
+
+### 05_sel_samples_dl_seq.sh
+Download selected samples as fastq, unzip the samples. These sequences are the ones that will be classified with Kraken2. A list of selected sequences is read from 02_sample_list/sample_selection_for_analysis.txt.
+
+### Placeholder - Sequences Preprocessing
+Before running Kraken2, preprocessing of the sequences in necessary (including trimming of adapters, deduplication, removal of low quality reads and chimera removal). This is not possible to do withhin the scope of this project, so Kraken2 will be run on the raw data instead. This will obviously cause results/plots that do not represent reality. However, the point of the project is for us to learn how do built interactive plots and integrate them into a small app interface. To complete the whole pipeline, the preprocessing steps would need to be added later. 
