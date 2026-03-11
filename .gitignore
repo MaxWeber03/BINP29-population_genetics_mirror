@@ -41,6 +41,8 @@
 08_kraken_db/
 09_kraken_output/
 10_bracken_output/
+11_taxonkit_db/
+12_data_for_krona/
 
 # Specific Files
 myapalike.bst
