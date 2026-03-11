@@ -18,10 +18,10 @@ The input data we recieved is not publicly available here.
 
 
 ### To Do & Known Issues (if there was more time)
-- Instead of downloading all column of the metadata, download only the necessary field
 - To determine the country, only the country works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
 - Make Snakemake Workflow
 - Add preprocessing of samples (trimming, deduplication, chimera removal) instead of running classification on raw reads.
+- Add support for single end samples in kraken
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -112,3 +112,11 @@ Download selected samples as fastq, unzip the samples. These sequences are the o
 
 ### Placeholder - Sequences Preprocessing
 Before running Kraken2, preprocessing of the sequences in necessary (including trimming of adapters, deduplication, removal of low quality reads and chimera removal). This is not possible to do withhin the scope of this project, so Kraken2 will be run on the raw data instead. This will obviously cause results/plots that do not represent reality. However, the point of the project is for us to learn how do built interactive plots and integrate them into a small app interface. To complete the whole pipeline, the preprocessing steps would need to be added later. 
+
+### 06_kraken2.sh
+Script that runs kraken2 to identify the taxonomic groups (to genus levels) in the samples. Also downloads the silva database required for kraken2. Runs on the sample listed in 02_sample_list/sample_selection_for_analysis.txt and on the sequences given in 07_sample_seq/.
+
+### 07_bracken.sh
+Script that runs bracken on the kraken2 outputs to add information about relative abundance to the taxonomic groups.
+
+# Use taxonomic id to get taxonomic tree from NCBI
