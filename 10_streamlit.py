@@ -11,8 +11,6 @@ import streamlit as st
 # print(st.__version__) # 1.55.0
 import pandas as pd # for plotting with plotly we need the dataframe as pandas, not polars
 # print(pd.__version__) # 2.3.3
-import streamlit.components.v1 as components
-
 
 #################
 # Read Data
