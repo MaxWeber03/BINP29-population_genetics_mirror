@@ -15,6 +15,7 @@ The input data we recieved is not publicly available here.
     - Streamlit 1.55.0 for building an "app"
     - streamlit_plotly_events 0.06 to register click on maps
 - Conda 25.11.1
+- Snakemake 9.16.3
 - Kraken2 2.17.1
 - Bracken 3.0.1
 - Taxonkit v0.20.0
