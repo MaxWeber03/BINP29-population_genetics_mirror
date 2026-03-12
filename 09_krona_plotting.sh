@@ -12,14 +12,14 @@ ktImportText
 mkdir 13_krona_output
 
 # run ktImportText
-for sample in 12_data_for_krona/*.tsv
+for sample in 12_data_for_krona/*.tsv; do
 
     # extract sample name
     sample_name=$(basename "$sample" .tsv)
     
     # run ktImportText to create Krona plots
     ktImportText \
-        -o  13_krona_output/$sample.html \
+        -o  ./13_krona_output/$sample_name.html \
         -n 'all' \
         $sample
         
