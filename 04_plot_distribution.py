@@ -13,8 +13,6 @@ import pandas as pd # for plotting with plotly we need the dataframe as pandas, 
 # print(pd.__version__) # 2.3.3
 import plotly.express as px
 # print(plotly.__version__) # 6.6.0
-import kaleido # 1.2.0, for saving plotly
-
 
 #################
 # Read Data
