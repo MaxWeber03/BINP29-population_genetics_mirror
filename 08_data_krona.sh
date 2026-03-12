@@ -15,6 +15,7 @@ mkdir 11_taxonkit_db
 mkdir 12_data_for_krona
 
 # Download taxonomy database into 11_taxonkit_db
+# Could be made optional, but it does not take long to download the db, and this way we make sure it is correct/not corrupted
 curl -o 11_taxonkit_db/taxdump.tar.gz ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
 cd 11_taxonkit_db/
 tar -xvzf taxdump.tar.gz
@@ -43,7 +44,7 @@ for file in 10_bracken_output/*.bracken_output; do
             taxonkit lineage --data-dir 11_taxonkit_db/ \
             | awk -F'\t' 'BEGIN { OFS="\t" } {print $2, $3}' \
             | sed 's/;/\t/g' \
-            > "12_data_for_krona/${file_name}.temp.tsv"
+            > "12_data_for_krona/${file_name}.tsv"
 
     # | tee  /dev/stderr \ can be inserted for debugging
     # taxonkit name2taxid returns taxonname, abundance and taxonid
