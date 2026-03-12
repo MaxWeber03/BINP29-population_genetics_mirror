@@ -123,6 +123,5 @@ Script that runs bracken on the kraken2 outputs to add information about relativ
 ### 08_data_krona.sh
 Script that extracts the taxon name from the bracken output, finds the full taxonomy for that name, and writes the full taxonomy into a file together with the relative abundance in the sample. Uses taxonkit v0.20.0. Outputs are .tsv in 12_data_for_krona that are used to create krona plots.
 
-### 09_krona.plotting.sh
-Script that creates krona plot based on the preformatted data of 08_data_krona.sh. Reads data from 12_data_for_krona and writes .html files for the plots with sample names into 13_krona_output. Uses KronaTools 2.8.1.
-
+### 09_krona_plotting.sh
+Script that creates krona plot based on the preformatted data of 08_data_krona.sh. Reads data from 12_data_for_krona and writes .html files for the plots with sample names into 13_krona_output. Uses KronaTools 2.8.1. This script also creates 13_krona_output/sample_path.tsv which links the the sample names to the relative filepath of the krona plot.
