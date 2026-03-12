@@ -15,10 +15,10 @@ mkdir 11_taxonkit_db
 mkdir 12_data_for_krona
 
 # Download taxonomy database into 11_taxonkit_db
-#curl -o 11_taxonkit_db/taxdump.tar.gz ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+curl -o 11_taxonkit_db/taxdump.tar.gz ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
 cd 11_taxonkit_db/
-#tar -xvzf taxdump.tar.gz
-#rm taxdump.tar.gz
+tar -xvzf taxdump.tar.gz
+rm taxdump.tar.gz
 cd ..
 
 echo "Finished DB Download"
