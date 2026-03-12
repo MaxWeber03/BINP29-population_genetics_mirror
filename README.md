@@ -13,6 +13,7 @@ The input data we recieved is not publicly available here.
     - Pandas 2.3.3 required for plotting
     - Plotly 6.6.0 for plotting
     - Streamlit 1.55.0 for building an "app"
+    - streamlit_plotly_events 0.06 to register click on maps
 - Conda 25.11.1
 - Kraken2 2.17.1
 - Bracken 3.0.1
@@ -24,6 +25,7 @@ The input data we recieved is not publicly available here.
 - Make Snakemake Workflow
 - Add preprocessing of samples (trimming, deduplication, chimera removal) instead of running classification on raw reads.
 - Add support for single end samples in kraken
+- Hovering does not work for Sweden, NE China and Canada on the streamlit map
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -128,4 +130,4 @@ Script that extracts the taxon name from the bracken output, finds the full taxo
 Script that creates krona plot based on the preformatted data of 08_data_krona.sh. Reads data from 12_data_for_krona and writes .html files for the plots with sample names into 13_krona_output. Uses KronaTools 2.8.1. This script also creates 13_krona_output/sample_path.tsv which links the the sample names to the relative filepath of the krona plot.
 
 ### 10_streamlit.py
-Creatly plotly charts and open them as a streamlit website.
+Creatly plotly charts and open them as a streamlit website. 

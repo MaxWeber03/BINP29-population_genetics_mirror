@@ -11,16 +11,28 @@ import streamlit as st
 # print(st.__version__) # 1.55.0
 import pandas as pd # for plotting with plotly we need the dataframe as pandas, not polars
 # print(pd.__version__) # 2.3.3
+import streamlit.components.v1 as components
+
+
 
 
 #################
 # Read Data
 #################
 
+# sample metadata
 metadata = pd.read_csv( 
     filepath_or_buffer = "05_metadata_cleaned/metadata_cleaned.tsv",
     sep = "\t"
 )
+
+# dict to connect sammple to krona plot
+krona_plots = {}
+with open("13_krona_output/sample_path.tsv") as input:
+    for line in input:
+        krona_plots[line.split("\t")[0]] = line.split("\t")[1]
+
+# st.write(krona_plots)
 
 #################
 # Make histogram of samples per country and sequencing type
@@ -45,10 +57,6 @@ st.plotly_chart(histogram_countries_type)
 # Make interactive map of sampling locations
 #################
 
-# round locations
-metadata["Latitude"] = metadata["Latitude"].round(4)
-metadata["Longitude"] = metadata["Longitude"].round(4)
-
 # group samples by location to have list of samples on the map
 location_group = metadata.groupby(["Latitude", "Longitude"]).agg({
     "sample_accession": list,
@@ -62,18 +70,7 @@ location_group["hover"] = location_group.apply(
     axis=1
 )
 
-# st.write(location_group)
-
-# map with overlapping points and color codes sample type
-# map = px.scatter_map(
-#    data_frame = metadata,
-#    lat = "Latitude",
-#    lon = "Longitude",
-#    color = "Sequencing Type",
-#    center={'lat': 0, 'lon': 0},
-#    zoom=1,
-#    color_discrete_sequence=["#ff5733", "#33c1ff"]
-#)
+st.write(location_group)
 
 # map with one point for all samples of the location, not color coded
 map = px.scatter_map(
@@ -91,3 +88,20 @@ map.update_traces(
 
 st.header("Location of samples")
 st.plotly_chart(map)
+
+#################
+# Include Krona plots
+#################
+
+st.header("Krona Plots")
+
+for sample, filepath in krona_plots.items():
+    st.subheader(sample)
+    filepath = filepath.strip("\n")
+
+    # Read the HTML content
+    with open(filepath, "r", encoding="utf-8") as f:
+        html_content = f.read()
+
+    # Display the Krona plot
+    st.components.v1.html(html_content, height=800, scrolling=True)
