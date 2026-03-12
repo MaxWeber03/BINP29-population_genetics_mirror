@@ -12,6 +12,7 @@ The input data we recieved is not publicly available here.
     - Polars 1.38.1 for data handling
     - Pandas 2.3.3 required for plotting
     - Plotly 6.6.0 for plotting
+    - Streamlit 1.55.0 for building an "app"
 - Conda 25.11.1
 - Kraken2 2.17.1
 - Bracken 3.0.1
@@ -125,3 +126,6 @@ Script that extracts the taxon name from the bracken output, finds the full taxo
 
 ### 09_krona_plotting.sh
 Script that creates krona plot based on the preformatted data of 08_data_krona.sh. Reads data from 12_data_for_krona and writes .html files for the plots with sample names into 13_krona_output. Uses KronaTools 2.8.1. This script also creates 13_krona_output/sample_path.tsv which links the the sample names to the relative filepath of the krona plot.
+
+### 10_streamlit.py
+Creatly plotly charts and open them as a streamlit website.
