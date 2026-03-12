@@ -14,8 +14,6 @@ import pandas as pd # for plotting with plotly we need the dataframe as pandas, 
 import streamlit.components.v1 as components
 
 
-
-
 #################
 # Read Data
 #################
@@ -70,7 +68,7 @@ location_group["hover"] = location_group.apply(
     axis=1
 )
 
-st.write(location_group)
+# st.write(location_group)
 
 # map with one point for all samples of the location, not color coded
 map = px.scatter_map(
