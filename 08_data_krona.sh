@@ -15,11 +15,13 @@ mkdir 11_taxonkit_db
 mkdir 12_data_for_krona
 
 # Download taxonomy database into 11_taxonkit_db
-curl -o 11_taxonkit_db/taxdump.tar.gz ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+#curl -o 11_taxonkit_db/taxdump.tar.gz ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
 cd 11_taxonkit_db/
-tar -xvzf taxdump.tar.gz
-rm taxdump.tar.gz
+#tar -xvzf taxdump.tar.gz
+#rm taxdump.tar.gz
 cd ..
+
+echo "Finished DB Download"
 
 # test taxonkit
 # echo 61483 | taxonkit lineage --data-dir 11_taxonkit_db/ 
@@ -32,19 +34,22 @@ for file in 10_bracken_output/*.bracken_output; do
     # get basename of the files to extract the sample name
     file_name=$(basename "$file" .bracken_output)
 
-    # read columns from bracken output, create two new files cotaining one column each
-    awk '{print $7}' $file > "12_data_for_krona/${file_name}_col1"
-    head -n 1 "$file" | awk '{print $1}' > "12_data_for_krona/${file_name}_col2"
-    tail -n +2 "$file" | awk '{print $1}' | taxonkit name2taxid --data-dir 11_taxonkit_db/ | awk {'print $2'} | taxonkit lineage --data-dir 11_taxonkit_db/ >> "12_data_for_krona/${file_name}_col2"
+    # read columns from bracken output, skip header, only keep column 7 for rel abundance and col 1 for taxon name
+    # then run taxonkit, first find taxonit, then find lineage for that ID
+    grep -v ^name $file \
+    | awk -F'\t' 'BEGIN { OFS="\t" } {print $1, $7}' \
+    | taxonkit name2taxid --data-dir 11_taxonkit_db/ \
+            | awk -F'\t' 'BEGIN { OFS="\t" } {if ($3 != "") print $3, $2}' | \
+            taxonkit lineage --data-dir 11_taxonkit_db/ \
+            | awk -F'\t' 'BEGIN { OFS="\t" } {print $2, $3}' \
+            | sed 's/;/\t/g' \
+            > "12_data_for_krona/${file_name}.temp.tsv"
 
-    # put the two column together into one new file
-    paste "12_data_for_krona/${file_name}_col1" "12_data_for_krona/${file_name}_col2" > "12_data_for_krona/${file_name}.temp.tsv"
+    # | tee  /dev/stderr \ can be inserted for debugging
+    # taxonkit name2taxid returns taxonname, abundance and taxonid
+    # we then filter the rows that have found a taxonid ($3 exists), and continue with col 3 and 2, taxonid and abundance
+    # this is goes through taxonkit lineage, which outputs taxonid, abundance and lineage
+    # we keep abundance and lineage
+    # before writing to the file, ; is replaced with \t in order to have the correct delimiter in the lineage
 
-    # remove all rows with no taxonomy (nothing found)
-    awk '{if($2 != "") print}' "12_data_for_krona/${file_name}.temp.tsv" > "12_data_for_krona/${file_name}.tsv"
-
-    # remove the temp files
-    rm "12_data_for_krona/${file_name}_col1"
-    rm "12_data_for_krona/${file_name}_col2"
-    rm "12_data_for_krona/${file_name}.temp.tsv"
-done
+  done
