@@ -4,7 +4,7 @@
 
 # Install bracken with conda
 # conda create -n taxonkit -c bioconda
-conda activate taxonkit
+# conda activate taxonkit
 # conda install taxonkit=0.20.0
 
 # Check version

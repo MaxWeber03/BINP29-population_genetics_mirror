@@ -2,7 +2,7 @@
 
 # Install bracken with conda
 # conda create -n bracken -c bioconda
-conda activate bracken
+# conda activate bracken
 # conda install bracken=3.1
 
 # Check version

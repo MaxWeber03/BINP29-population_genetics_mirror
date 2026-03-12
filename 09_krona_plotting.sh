@@ -2,7 +2,7 @@
 
 # Install krona with conda
 # conda create -n krona -c bioconda
-conda activate krona
+# conda activate krona
 # conda install krona=2.8.1
 
 # Check version
