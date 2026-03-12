@@ -16,7 +16,7 @@ The input data we recieved is not publicly available here.
 - Kraken2 2.17.1
 - Bracken 3.0.1
 - Taxonkit v0.20.0
-
+- KronaTools 2.8.1
 
 ### To Do & Known Issues (if there was more time)
 - To determine the country, only the country works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
@@ -122,3 +122,7 @@ Script that runs bracken on the kraken2 outputs to add information about relativ
 
 ### 08_data_krona.sh
 Script that extracts the taxon name from the bracken output, finds the full taxonomy for that name, and writes the full taxonomy into a file together with the relative abundance in the sample. Uses taxonkit v0.20.0. Outputs are .tsv in 12_data_for_krona that are used to create krona plots.
+
+### 09_krona.plotting.sh
+Script that creates krona plot based on the preformatted data of 08_data_krona.sh. Reads data from 12_data_for_krona and writes .html files for the plots with sample names into 13_krona_output. Uses KronaTools 2.8.1.
+
