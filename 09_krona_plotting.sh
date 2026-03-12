@@ -24,3 +24,20 @@ for sample in 12_data_for_krona/*.tsv; do
         $sample
         
 done
+
+# For showing the krona plots, a relation between the samples and the filepath could be useful
+rm 13_krona_output/sample_path.tsv # remove the file if it remains from previous runs
+
+for krona_plot in 13_krona_output/*.html; do
+    sample_name=$(basename "$krona_plot" .html)
+    # these are the same samples has were given in 02_sample_list/sample_selection_for_analysis.txt
+    # Let us verify that(grep -q gives 0 or 1)
+    if ! grep -q $sample_name 02_sample_list/sample_selection_for_analysis.txt; then
+        echo "Error: The Krona Plot does not match any input sample name"
+        else
+        echo "Krona plot for $sample_name was successfully created."
+    fi
+
+    # now create a file with sample name and relative plot path
+    echo -e "$sample_name\t$krona_plot" >> 13_krona_output/sample_path.tsv
+done
