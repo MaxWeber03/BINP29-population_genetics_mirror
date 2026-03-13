@@ -5,14 +5,14 @@ Respository:
 - Codeberg: https://codeberg.org/MaxWeber/BINP29-population_genetics
 - GitHub Mirror: https://github.com/MaxWeber03/BINP29-population_genetics_mirror
 
-The input data we recieved is not publicly available here.
+The input data we recieved is not publicly available here for now.
 
-### Usage with snakemake
+## Usage with snakemake
 Requires a list of samples accession numbers in 
 
     02_sample_list/NCBI.mine.metagenome.sampleID.txt
 
-and a subset of that list for the samples for which should be created in
+and a subset of that list for the samples for which krona plots should be created in
 
     02_sample_list/sample_selection_for_analysis.txt
 
@@ -26,7 +26,7 @@ To open streamlit (not possible from remote):
 
 Using one job is suffienct as the scripts run all samples at the same time. The processing is not fully parallel in this way, but each scripts processes all samples, not just one at a time. The next I use snakemake, each script should not loop over all samples, but process one sample at a time so parallel with snakemake becomes useable.
 
-### Used Software & Versions
+### Used Software and Requirements
 - Python 3.13.11 was used for development and testing
     - Polars 1.38.1 for data handling
     - Pandas 2.3.3 required for plotting
@@ -39,28 +39,50 @@ Using one job is suffienct as the scripts run all samples at the same time. The 
 - Taxonkit v0.20.0
 - KronaTools 2.8.1
 
-When executed through snakemake, only Snakemake 9.16.3 is required. The rest will be resolved internally by snakemake through conda.
+When executed through snakemake, only Snakemake 9.16.3 is required. The rest will be resolved internally by snakemake through conda. 
+A internet connection is requried to download data, conda packages and databases. The workflow can be executed with as little as 8 GB RAM and requires about 3.2 GB of disk space. 
 
-### To Do & Known Issues (if there was more time)
+## To Do & Known Issues (if there was more time)
 - To determine the country, only the country field works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
 - Add preprocessing of samples (trimming, deduplication, chimera removal) instead of running classification on raw reads.
-- Add support for single end samples in kraken
+- Add support for single end reads in kraken
 - Hovering does not work for Sweden, NE China and Canada on the streamlit map
 - Filtering of microbioal taxa of interested is missing.
 
-### File Structure
-The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
+## File Structure
+The analysis workflow is divided into individual scripts that can be run through snakemake. When all of the data analysis is done, an "app" like script with streamlit is executed to open the results in a miniapp.
 
 Folders:
-- 01_report_presentation/ => holds report and presentation
-- 02_sample_list/ => holds a .txt file with all the sample IDs
-- 03_metadata => holds the metadata files of all samples
-- 04_metadata_table => holds tables of metadata for all samples
+- 01_report_presentation/ => report and presentation
+- 02_sample_list/ => .txt files with all the sample IDs
+- 03_metadata => the metadata files of all samples
+- 04_metadata_table => tables of metadata for all samples
+- 05_metadata_cleaned => a cleaned metadata in which the information of interest are extracted
+- 06_plots => plots as .html, these are not the plots that are displayed in streamlit, but a preliminary exported version of them
+- 07_sample_seq => fastq files of sample reads
+- 08_kraken_db => silva database for kraken2
+- 09_kraken_output => reports written by kraken2
+- 10_bracken_output => reports written by bracken
+- 11_taxonkit_db => ncbi database of taxa used by taxonkit
+- 12_data_for_krona => data after preprocessing so it can be read by krona
+- 13_krona_output => krona plots as .html that are read by streamlit
+- envs => .yaml files for conda enviornments for snakemake
 
 Scripts (detail see workflow section below):
 - 01_retrieve_metadata.sh => script to download all metadata files
 - 02_extract_metadata.py => script to extract information from the metadata and to create tables with samples and their relevant metadata
 - inspect_metadata_format.R => mini script for dev to view metadata file with aligned columns in R, not necessary for the pipeline
+- 03_clean_metadata.py => extracts the information of interest from the metadata
+- 04_plot_distribution.py => creates plots of sample distribution
+- 05_sel_samples_dl_seq.sh => downloads the fastq sequences of the samples selected in 02_sample_list/sample_selection_for_analysis.txt
+- 06_kraken2.sh => runs kraken2 on the sequences to identify the taxa
+- 07_bracken.sh => runs bracken on the kraken2 output to estimate the relative abundance of the taxa
+- 08_data_krona.sh => parses bracken reports into a format that is readable by krona
+- 09_krona_plotting.sh => creates krona plots
+- 10_streamlit.py => open the plots in a small app that runs through your browser, requires local execution (not on server/remote)
+- cleanup.sh => deletes all intermediate file, is not executed by snakemake, can be run manually to save disk space after analysis if finished
+- Snakefile => runs pipeline through snakemake
+
 
 ## Instructions Summary
 This project is a one week project and part of BINP29 Sequencing Informatics II during the second semester of M. Sc. Bioinformatics at Lund University.
@@ -69,7 +91,7 @@ My task is to visualize the species distribution from metagenomics samples of mi
 The starting point for the project is a list of samples on a database.
 The final result is supposed to be an "app", for which we can use streamlit (pyhon package, that builds app around our scripts). The implementation of this will likely not be polished as we have not developed anything into an app before and only have a short time. For submission, a 2-4 page report (paper style) and a 3-4 minute presentation are required.
 
-### Copy of step-by-step instructions
+### Copy of step-by-step assignment instructions
 "Visualising the Skin Microbiome - Objective: Explore publicly available skin microbiome datasets and visualise their geographical distribution and microbial composition.
 
 1. You will be provided with a list of NCBI skin microbiome metagenome Bio-project IDs.
@@ -84,32 +106,7 @@ The final result is supposed to be an "app", for which we can use streamlit (pyh
 Reference:
 - Krona plot - https://ondovb.github.io/portfolio/01-krona"
 
-
-### Meeting Monday 09/03 - Outline and Overview: Notes
-- all students of our group get different metagenomics data, but develope the same pipeline/app
-- I will work on mining data & 16S => kraken works with 16S => silva db, do not use metaphlan
-- In this meeting we were explictily told that making the map interactive is optional if we have time at the end, and not a rigid requirement.
-
-Steps:
-1. fetch meta data from db (curl + link)
-    - curl "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession=SAMEA121737266&fields=all&format=tsv"
-    - Sample ID can be replaced in the link
-    - get column numbers in db metadata: cat A.txt | head -n2 | sed 's/\t/\n/g' | nl -ba
-2. visualise distrubution => histogram of samples countries or map
-    - metadata contains link to fasta and coordinates
-3. distribution of 16S vs shotgun
-    - grouped barplot with sequencing type and country
-4. interactive map => interactive is optional, could link to plot, plot only for the three selected samples
-5. take 3 samples from from 16S rRNA (the files are reads, so lot of stuff in each sample), retrieve fasta files
-6. use kraken2 through conda (since I am working on 16S, would be Metaphlan for shotgun)
-    - visualize species distribution based on the fasta files
-    - x species, y abundance
-7. make interactive plots with kraken
-8. integrate the plots into an interactive version of step 4
-
 ## Workflow
-
-At the start, a list of samples is given (02_sample_list/NCBI.mine.metagenome.sampleID.txt).
 
 ### 01_retrieve_metadata.sh
 Bash script that loops over the sample IDs in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, downloads the metadata as .tsv and saves the metadata in 03_metadata/. This process with just curl takes a long time, eventhough neither the CPU or the network are used at full capactiy, because each small file waits on responses from the server. To speed the process up, parallel downloading through xargs with curl is used instead. It does cut down the waiting time by minutes in testing. This script also sets up the empty folders for the python scripts (could be done in python too, but faster here).
