@@ -1,0 +1,12 @@
+# Evironment for the python scripts and their modules (all .py use same versions)
+name: python_scripts
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.13.11
+  - polars=1.38.1
+  - pandas=2.3.3
+  - plotly=6.6.0
+  - streamlit=1.55.0

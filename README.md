@@ -7,25 +7,46 @@ Respository:
 
 The input data we recieved is not publicly available here.
 
+### Usage with snakemake
+Requires a list of samples accession numbers in 
+
+    02_sample_list/NCBI.mine.metagenome.sampleID.txt
+
+and a subset of that list for the samples for which should be created in
+
+    02_sample_list/sample_selection_for_analysis.txt
+
+To create output files run:
+
+    snakemake --use-conda -j1
+
+To open streamlit (not possible from remote):
+
+    snakemake --use-conda -j1 streammlit
+
+Using one job is suffienct as the scripts run all samples at the same time. The processing is not fully parallel in this way, but each scripts processes all samples, not just one at a time. The next I use snakemake, each script should not loop over all samples, but process one sample at a time so parallel with snakemake becomes useable.
+
 ### Used Software & Versions
 - Python 3.13.11 was used for development and testing
     - Polars 1.38.1 for data handling
     - Pandas 2.3.3 required for plotting
     - Plotly 6.6.0 for plotting
     - Streamlit 1.55.0 for building an "app"
-    - streamlit_plotly_events 0.06 to register click on maps
 - Conda 25.11.1
+- Snakemake 9.16.3
 - Kraken2 2.17.1
 - Bracken 3.0.1
 - Taxonkit v0.20.0
 - KronaTools 2.8.1
 
+When executed through snakemake, only Snakemake 9.16.3 is required. The rest will be resolved internally by snakemake through conda.
+
 ### To Do & Known Issues (if there was more time)
-- To determine the country, only the country works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
-- Make Snakemake Workflow
+- To determine the country, only the country field works. It could be done with the coordinates as well, to make the code more robust, but including access to a DB or api to look up the countries for coordinates is out of the scope of this project
 - Add preprocessing of samples (trimming, deduplication, chimera removal) instead of running classification on raw reads.
 - Add support for single end samples in kraken
 - Hovering does not work for Sweden, NE China and Canada on the streamlit map
+- Filtering of microbioal taxa of interested is missing.
 
 ### File Structure
 The analysis workflow is divided into individual scripts (connecting them with snakemake would be nice, but we do not have the time for it). When all of the data analysis is done, an "app" like script with streamlit can be executed to open the results in a miniapp.
@@ -130,4 +151,4 @@ Script that extracts the taxon name from the bracken output, finds the full taxo
 Script that creates krona plot based on the preformatted data of 08_data_krona.sh. Reads data from 12_data_for_krona and writes .html files for the plots with sample names into 13_krona_output. Uses KronaTools 2.8.1. This script also creates 13_krona_output/sample_path.tsv which links the the sample names to the relative filepath of the krona plot.
 
 ### 10_streamlit.py
-Creatly plotly charts and open them as a streamlit website. 
+Creates plotly charts and open them as a streamlit website. Krona plots are integrated into the website. 

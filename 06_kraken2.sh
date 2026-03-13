@@ -2,7 +2,7 @@
 
 # Install kraken2 with conda
 # conda create -n kraken2 -c bioconda
-conda activate kraken2
+# conda activate kraken2
 # conda install kraken2=2.17.1
 
 # Confirm version
