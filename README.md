@@ -1,11 +1,17 @@
 # Population Genetics Project: Visualizing species distribution from 16S metagenomics
 
-## Overview
-Respository:
+## Repository
 - Codeberg: https://codeberg.org/MaxWeber/BINP29-population_genetics
 - GitHub Mirror: https://github.com/MaxWeber03/BINP29-population_genetics_mirror
 
 The input data we recieved is not publicly available here for now.
+
+### Branches
+- snakemake: outdated dev branch used for snakemake implementation
+- master: analysis pipeline without filtering of taxa, misses the latex report and presentation
+- taxon_filtering: further developed version of master that includes hardcoded filtering of the taxa to only include taxons interesting for specific mine types. Based on these results, the report is written. This branch contains the report and presentation.
+
+The results of all versions of the pipeline are not accurate, as quality control steps on the sequence reads are not included due to the scope of the project. Deduplication, chimera removal and trimming of adapters and low quality reads would be necessary to have more accurate results.
 
 ## Usage with snakemake
 Requires a list of samples accession numbers in 
@@ -82,7 +88,6 @@ Scripts (detail see workflow section below):
 - 10_streamlit.py => open the plots in a small app that runs through your browser, requires local execution (not on server/remote)
 - cleanup.sh => deletes all intermediate file, is not executed by snakemake, can be run manually to save disk space after analysis if finished
 - Snakefile => runs pipeline through snakemake
-
 
 ## Instructions Summary
 This project is a one week project and part of BINP29 Sequencing Informatics II during the second semester of M. Sc. Bioinformatics at Lund University.
