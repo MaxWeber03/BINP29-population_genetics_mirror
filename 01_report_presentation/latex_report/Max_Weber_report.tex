@@ -5,14 +5,11 @@
 \usepackage{todonotes} %Enables ToDo notes (\todo)
 %\usepackage{minted}
 \usepackage{placeins}
-\usepackage[authoryear]{natbib}
+\usepackage[style=apa,sortcites=true,sorting=nyt, backend=biber]{biblatex}
+\addbibresource{references.bib}
 \usepackage{caption} % to adjust caption width
 \usepackage{amsmath}
 \usepackage{nameref}
-
-
-\bibliographystyle{myapalike}
-
 
 \usepackage[hidelinks]{hyperref} % links in the text, should be loaded last
 
@@ -37,10 +34,26 @@
 Test
 % Methods
 \section{Methods}
-A repository with all scripts can be accessed on \href{https://codeberg.org/MaxWeber/BINP29-population_genetics}{Codeberg} or \href{https://github.com/MaxWeber03/BINP29-population_genetics_mirror}{GitHub}.
+\subsection{Pipeline Overview}
+To visualize the microbial distribution of different samples, a snakemake workflow using bash and python scripts was develeoped. The pipeline takes two different files with NCBI sampleIDs from metagenomics studys as input, aquires metadata and sequences from EBI and opens a python streamlit app in a browser. The app shows the distribution of all provided samples, as well as krona plots of the microbial community for selected samples. Please refer to the readme file for instruction on how to execute the pipeline and on how to provide the input files. The pipeline will fail if samples with single end sequencing reads are used, as kraken2 is currently only implemented for paired and reads. For the testing done here on microbioms of mines, the taxons have been filtered to only contain the taxa of interest specific to these mines. \todo{add taxa and input files}
+
+\subsection{Code availability}
+A repository for the analysis pipeline can be accessed on \href{https://codeberg.org/MaxWeber/BINP29-population_genetics}{\color{blue}Codeberg} or \href{https://github.com/MaxWeber03/BINP29-population_genetics_mirror}{\color{blue}GitHub}. The here descriped pipeline is stored in branch ``taxon\_filtering'', a version of the pipeline without the filtering of taxa is stored in ``master''.
+The readme file in the repositories gives more detailed documentation about software versions and usage.
+
+\subsection{Pipeline step-by-step}
+The pipline is executed by snakemake \parencite{snakemake} with conda.
+
+\subsubsection{Metadata}
+The first steps of the pipeline are to download the metadata files from given sampleIDs from EBI. In order to this efficients for large numbers of samples, the download is parallelised. Following the successful download, metadata of interest (fastq link, sample location, sample tyle) are extracted by python scripts utilising the polars package \parencite{polars}, which only reads the necessary columns, instead of all columns, to keep the data processing fast.
+
+\subsubsection{Identifying taxonomic groups and their abundance from samples}
+The user provides a subset of samples to be used for more detailed analysis and to create krona plots by specifying them in the input files. The fastq files for these samples are subsequently downloaded. The sequences are then sample-wise processed with kraken2 \parencite{Kraken, Kraken2}, which creates a report containing the taxonomic groups found in the sample. This step uses the silva database v. 138.2 as a reference \parencite{silva}. Next, bracken \parencite{bracken}, Bayesian Reestimation of Abundance with KrakEN, is used estimate the relative abundance of the taxonomic groups identified by kraken2. For the taxonomic groups, the whole taxonomic lineage is then looked up in the NCBI taxonomy database \parencite{ncbi} with taxonkit \parencite{taxonkit}. The resulting data is filtered \todo{add filtering} and then plotted with krona \parencite{krona}.
+
+\subsubsection{Show results as app}
+The krona plots are opened together with plots for sample distribution and location as interactive plots in a streamlit app, that can be viewed through a browser. This is done in python using the pandas package \parencite{pandas}, the plotly package \parencite{plotly} and the streamlit package \parencite{streamlit}.
 
 
-Test cite \citep{Kraken, Kraken2, silva, bracken}.
 
 %Discussion
 \section{Discussion}
@@ -49,12 +62,7 @@ Test cite \citep{Kraken, Kraken2, silva, bracken}.
 
 % References
 \newpage
-\bibliography{references}
-
-% Supplemental Material
-\newpage
-\FloatBarrier
-\section{Supplemental Material}
+\printbibliography
 
 
 \end{document}

@@ -34,6 +34,8 @@
 *.gz
 *.fastq
 *.dmp
+*.xml
+*.bcf
 
 # Folders
 00_instructions/
