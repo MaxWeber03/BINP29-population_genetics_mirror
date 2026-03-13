@@ -14,6 +14,8 @@ The input data we recieved is not publicly available here for now.
 The results of all versions of the pipeline are not accurate, as quality control steps on the sequence reads are not included due to the scope of the project. Deduplication, chimera removal and trimming of adapters and low quality reads would be necessary to have more accurate results.
 
 ## Usage with snakemake
+
+### Input files
 Requires a list of samples accession numbers in 
 
     02_sample_list/NCBI.mine.metagenome.sampleID.txt
@@ -21,6 +23,16 @@ Requires a list of samples accession numbers in
 and a subset of that list for the samples for which krona plots should be created in
 
     02_sample_list/sample_selection_for_analysis.txt
+
+Both files could have an example content like:
+
+    SAMN11898199
+    SAMN11898200
+    SAMN11898201
+
+The pipeline was tested with these three example sample IDs and the report (in taxon_filtering branch) is based on the results of these samples. For the samples given in 02_sample_list/NCBI.mine.metagenome.sampleID.txt, just the metadata is processed. The sequences are downloaded and processed to krona plots only for the samples given in 02_sample_list/sample_selection_for_analysis.txt, these samples must also included in 02_sample_list/NCBI.mine.metagenome.sampleID.txt in order to find the metadata.
+
+### Running snakemake
 
 To create output files run:
 
@@ -30,7 +42,7 @@ To open streamlit (not possible from remote):
 
     snakemake --use-conda -j1 streamlit
 
-Using one job is suffienct as the scripts run all samples at the same time. The processing is not fully parallel in this way, but each scripts processes all samples, not just one at a time. The next I use snakemake, each script should not loop over all samples, but process one sample at a time so parallel with snakemake becomes useable.
+Using one job is suffienct as the scripts run all samples at the same time. The processing is not fully parallel in this way, but each scripts processes all samples, not just one at a time. The next time I use snakemake, each script should not loop over all samples, but process one sample at a time so parallel with snakemake becomes useable.
 
 ### Used Software and Requirements
 - Python 3.13.11 was used for development and testing
