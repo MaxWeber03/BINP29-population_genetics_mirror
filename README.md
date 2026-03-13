@@ -28,7 +28,7 @@ To create output files run:
 
 To open streamlit (not possible from remote):
 
-    snakemake --use-conda -j1 streammlit
+    snakemake --use-conda -j1 streamlit
 
 Using one job is suffienct as the scripts run all samples at the same time. The processing is not fully parallel in this way, but each scripts processes all samples, not just one at a time. The next I use snakemake, each script should not loop over all samples, but process one sample at a time so parallel with snakemake becomes useable.
 
