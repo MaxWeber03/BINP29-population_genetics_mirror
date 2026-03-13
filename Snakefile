@@ -124,7 +124,7 @@ rule retrieve_metadata:
     output:
         expand("03_metadata/{sample_all}.tsv", sample_all = SAMPLES_ALL)
     shell:
-        "01_retrieve_metadata.sh"
+        "bash 01_retrieve_metadata.sh"
 
 # rule streamlit to launch streamlit
 rule streamlit:
