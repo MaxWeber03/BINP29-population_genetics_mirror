@@ -132,3 +132,10 @@ Script that creates krona plot based on the preformatted data of 08_data_krona.s
 
 ### 10_streamlit.py
 Creatly plotly charts and open them as a streamlit website. 
+
+### Usage with snakemake
+
+
+To create output files run:
+
+    snakemake --use-conda -j <number of jobs>

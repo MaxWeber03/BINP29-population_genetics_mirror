@@ -8,5 +8,5 @@ dependencies:
   - python=3.13.11
   - polars=1.38.1
   - pandas=2.3.3
-  - plotly.express=6.6.0
+  - plotly=6.6.0
   - streamlit=1.55.0

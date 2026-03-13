@@ -44,6 +44,7 @@
 10_bracken_output/
 11_taxonkit_db/
 12_data_for_krona/
+.snakemake/
 
 # Specific Files
 myapalike.bst
