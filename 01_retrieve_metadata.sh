@@ -14,7 +14,7 @@ mkdir 03_metadata
 # make this faster with parallel downloading through xargs
 
 cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
-    xargs -P 500 -I {} \
+    xargs -P 5 -I {} \
     curl --connect-timeout 15 -sS -o 03_metadata/{}.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession={}&fields=all&format=tsv"
 
 # execution time reduced to: 56 seconds, 711 successful downloads
@@ -30,7 +30,7 @@ cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
 # In testing, running curl on everything twice lead to a higher number of files successfully downloaded. The number did not furter increase with three runs.
 # So I will run it a second time
 cat 02_sample_list/NCBI.mine.metagenome.sampleID.txt | \
-    xargs -P 500 -I {} \
+    xargs -P 5 -I {} \
     curl --connect-timeout 15 -sS -o 03_metadata/{}.tsv "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&query=sample_accession={}&fields=all&format=tsv"
 
 # Extract sample ID, location, sequencing type (16S vs. Shotgut)
