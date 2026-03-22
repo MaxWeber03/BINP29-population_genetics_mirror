@@ -8,10 +8,31 @@ The input data we recieved is not publicly available here for now.
 
 ### Branches
 - snakemake: outdated dev branch used for snakemake implementation
-- master: analysis pipeline without filtering of taxa, misses the latex report and presentation
-- taxon_filtering: further developed version of master that includes hardcoded filtering of the taxa to only include taxons interesting for specific mine types. Based on these results, the report is written. This branch contains the report and presentation.
+- master: analysis pipeline without filtering of taxa
 
 The results of all versions of the pipeline are not accurate, as quality control steps on the sequence reads are not included due to the scope of the project. Deduplication, chimera removal and trimming of adapters and low quality reads would be necessary to have more accurate results.
+
+## Instructions Summary
+This project is a one week project and part of BINP29 Sequencing Informatics II during the second semester of M. Sc. Bioinformatics at Lund University.
+All students get different data, but some students have the same task.
+My task is to visualize the species distribution from metagenomics samples of microbioms from mines (e.g. gold or silver mines).
+The starting point for the project is a list of samples on a database.
+The final result is supposed to be an "app", for which we can use streamlit (pyhon package, that builds app around our scripts). The implementation of this will likely not be polished as we have not developed anything into an app before and only have a short time. For submission, a 2-4 page report (paper style) and a 3-4 minute presentation are required.
+
+### Copy of step-by-step assignment instructions
+"Visualising the Skin Microbiome - Objective: Explore publicly available skin microbiome datasets and visualise their geographical distribution and microbial composition.
+
+1. You will be provided with a list of NCBI skin microbiome metagenome Bio-project IDs.
+2. Extract metadata and visualise the geographical distribution of samples (number of samples from each country).
+3. Visualise the distribution of sequencing types (16S rRNA amplicon vs shotgun metagenome) across different geographical regions.
+4. Create an interactive map showing the locations where the microbiome samples were collected.
+5. Select three 16S samples and three shotgun metagenome samples from Sweden.
+6. Analyse and visualise the distribution of microbial species. If possible, attempt strain-level profiling.
+7. Generate Krona plots to visualise the microbial composition of these samples.
+8. Integrate this with the interactive map so that clicking on a sample location in Sweden opens the Krona plot showing its microbiome composition (this will be done for only the three samples).
+
+Reference:
+- Krona plot - https://ondovb.github.io/portfolio/01-krona"
 
 ## Usage with snakemake
 
@@ -101,28 +122,6 @@ Scripts (detail see workflow section below):
 - 10_streamlit.py => open the plots in a small app that runs through your browser, requires local execution (not on server/remote)
 - cleanup.sh => deletes all intermediate file, is not executed by snakemake, can be run manually to save disk space after analysis if finished
 - Snakefile => runs pipeline through snakemake
-
-## Instructions Summary
-This project is a one week project and part of BINP29 Sequencing Informatics II during the second semester of M. Sc. Bioinformatics at Lund University.
-All students get different data, but some students have the same task.
-My task is to visualize the species distribution from metagenomics samples of microbioms from mines (e.g. gold or silver mines).
-The starting point for the project is a list of samples on a database.
-The final result is supposed to be an "app", for which we can use streamlit (pyhon package, that builds app around our scripts). The implementation of this will likely not be polished as we have not developed anything into an app before and only have a short time. For submission, a 2-4 page report (paper style) and a 3-4 minute presentation are required.
-
-### Copy of step-by-step assignment instructions
-"Visualising the Skin Microbiome - Objective: Explore publicly available skin microbiome datasets and visualise their geographical distribution and microbial composition.
-
-1. You will be provided with a list of NCBI skin microbiome metagenome Bio-project IDs.
-2. Extract metadata and visualise the geographical distribution of samples (number of samples from each country).
-3. Visualise the distribution of sequencing types (16S rRNA amplicon vs shotgun metagenome) across different geographical regions.
-4. Create an interactive map showing the locations where the microbiome samples were collected.
-5. Select three 16S samples and three shotgun metagenome samples from Sweden.
-6. Analyse and visualise the distribution of microbial species. If possible, attempt strain-level profiling.
-7. Generate Krona plots to visualise the microbial composition of these samples.
-8. Integrate this with the interactive map so that clicking on a sample location in Sweden opens the Krona plot showing its microbiome composition (this will be done for only the three samples).
-
-Reference:
-- Krona plot - https://ondovb.github.io/portfolio/01-krona"
 
 ## Workflow
 
