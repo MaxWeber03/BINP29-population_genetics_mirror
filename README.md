@@ -86,8 +86,8 @@ A internet connection is requried to download data, conda packages and databases
 - Add preprocessing of samples (trimming, deduplication, chimera removal) instead of running classification on raw reads.
 - Add support for single end reads in kraken
 - Hovering does not work for Sweden, NE China and Canada on the streamlit map
-- Filtering of microbioal taxa of interested is missing.
-- Downloads may file on instable internet connect. Rerunning snakemake until downloads are successful usually fixes this.
+- Filtering of microbial taxa of interested is missing.
+- Downloads may fail on instable internet connect. Rerunning snakemake until downloads are successful usually fixes this.
 
 ## File Structure
 The analysis workflow is divided into individual scripts that can be run through snakemake. When all of the data analysis is done, an "app" like script with streamlit is executed to open the results in a miniapp.
